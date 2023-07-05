@@ -627,13 +627,13 @@ for test_T1w in ${T1w[@]}; do
 
                     # -----------------------------------------------------------------------------------------------------------------------------
                     # METHOD 1 - LINEAR histogram matching using eye/muscle tissue
+	            echo " "
+                    echo "================== Method 1 =================="
                     echo "  performing linear histogram matching"
                     
-                    M1_template_T1w=/home/stefan/DATA2/Sarah/REVIEW/Cappelle2021_final/tpl-MNI152NLin2009aSym_res-1_T1w.nii.gz
-                    #M1_template_T2w=/home/stefan/DATA2/Sarah/REVIEW/Cappelle2021_final/tpl-MNI152NLin2009aSym_res-1_T2w_lin_histmatch_2_T1w.nii.gz
-                    #M1_template_FLAIR=/home/stefan/DATA2/Sarah/REVIEW/Cappelle2021_final/tpl-MNI152NLin2009aSym_res-1_T2w_lin_histmatch_2_T1w.nii.gz
-                    M1_template_T2w=/home/stefan/DATA2/Sarah/REVIEW/Cappelle2021_final/tpl-MNI152NLin2009aSym_res-1_T2w.nii.gz
-                    M1_template_FLAIR=/home/stefan/DATA2/Sarah/REVIEW/Cappelle2021_final/tpl-MNI152NLin2009aSym_res-1_T2w.nii.gz
+                    M1_template_T1w=$kul_main_dir/atlasses/Local/Cappelle2021/T1w_template_mni.nii.gz
+                    M1_template_T2w=$kul_main_dir/atlasses/Local/Cappelle2021/T2w_template_mni.nii.gz
+                    M1_template_FLAIR=$kul_main_dir/atlasses/Local/Cappelle2021/FLAIR_template_mni.nii.gz
 
                     M1_template_mask_eye=$kul_main_dir/atlasses/Ganzetti2014/eyemask.nii
                     M1_template_mask_tempmuscle=$kul_main_dir/atlasses/Ganzetti2014/tempmask.nii
@@ -715,14 +715,14 @@ for test_T1w in ${T1w[@]}; do
 
                     # -----------------------------------------------------------------------------------------------------------------------------
                     # METHOD 2 - the NON-LINEAR histogram matching using non-brain tissue
+		    echo " "
+                    echo "================== Method 2 =================="
                     echo "  performing nonlinear histogram matching"
                     # Warp the brain_mask and its inverse to subject space
                     
-                    M2_template_T1w=/home/stefan/DATA2/Sarah/REVIEW/Cappelle2021_final/tpl-MNI152NLin2009aSym_res-1_T1w.nii.gz
-                    #M2_template_T2w=/home/stefan/DATA2/Sarah/REVIEW/Cappelle2021_final/tpl-MNI152NLin2009aSym_res-1_T2w_lin_histmatch_2_T1w.nii.gz
-                    #M2_template_FLAIR=/home/stefan/DATA2/Sarah/REVIEW/Cappelle2021_final/tpl-MNI152NLin2009aSym_res-1_T2w_lin_histmatch_2_T1w.nii.gz
-                    M2_template_T2w=/home/stefan/DATA2/Sarah/REVIEW/Cappelle2021_final/tpl-MNI152NLin2009aSym_res-1_T2w.nii.gz
-                    M2_template_FLAIR=/home/stefan/DATA2/Sarah/REVIEW/Cappelle2021_final/tpl-MNI152NLin2009aSym_res-1_T2w.nii.gz
+                    M2_template_T1w=$M1_template_T1w
+                    M2_template_T2w=$M1_template_T2w
+                    M2_template_FLAIR=$M1_template_FLAIR
 
                     input="$kul_main_dir/atlasses/Ganzetti2014/brainmask_mni_dilated.nii"
                     output="$outdir/masks/${base}_method2_MNI2subj_brainmask_mni_dilated.nii.gz"
@@ -774,14 +774,17 @@ for test_T1w in ${T1w[@]}; do
                     
 
                     # Method 3 - Cappelle & Sunaert
+                    echo " "
+                    echo "================== Method 3 =================="
                     echo "  performing second (Cappelle) nonlinear histogram matching"
 
-                    M3_template_T1w=/home/stefan/DATA2/Sarah/REVIEW/Cappelle2021_final/tpl-MNI152NLin2009aSym_res-1_Cappelle2021_T1w.nii.gz
-                    M3_template_T2w=/home/stefan/DATA2/Sarah/REVIEW/Cappelle2021_final/tpl-MNI152NLin2009aSym_res-1_Cappelle2021_T2w.nii.gz
-                    M3_template_FLAIR=/home/stefan/DATA2/Sarah/REVIEW/Cappelle2021_final/tpl-MNI152NLin2009aSym_res-1_Cappelle2021_FLAIR.nii.gz
+                    M3_template_T1w=$M1_template_T1w
+                    M3_template_T2w=$M1_template_T2w
+                    M3_template_FLAIR=$M1_template_FLAIR
 
-                    M3_template_mask_4_T1w=/home/stefan/DATA2/Sarah/REVIEW/Cappelle2021_final/tpl-MNI152NLin2009aSym_res-1_Cappelle2021_mask_4_T1w.nii.gz
-                    M3_template_mask_4_T2w_and_FLAIR=/home/stefan/DATA2/Sarah/REVIEW/Cappelle2021_final/tpl-MNI152NLin2009aSym_res-1_Cappelle2021_mask_4_T2w_and_FLAIR.nii.gz
+                    M3_template_mask_4_T1w=$kul_main_dir/atlasses/Local/Cappelle2021/T1w_template_brain_mask_mni.nii.gz
+                    M3_template_mask_4_T2w_and_FLAIR=$kul_main_dir/atlasses/Local/Cappelle2021/T2wFLAIR_template_skull_and_ventricles_mask_mni.nii.gz
+
 
                     mask1="$outdir/masks/${base}_T1w_iso_biascorrected_brain_mask.nii.gz"
                     mask2="$outdir/masks/${base}_T1w_iso_biascorrected_brain_inverted_mask.nii.gz"
@@ -854,19 +857,30 @@ for test_T1w in ${T1w[@]}; do
 
 
 
-                    # Last method of calibration
+                    echo " "
+                    echo "================== Method 4 =================="
+                    # Method 4  of calibration
                     # do it in the whole image except for the MS lesions
 
                     M4_template_T1w=$M3_template_T1w
                     M4_template_T2w=$M3_template_T2w
                     M4_template_FLAIR=$M3_template_FLAIR
-                    M4_template_mask=/home/stefan/DATA2/Sarah/REVIEW/Cappelle2021_final/tpl-MNI152NLin2009aSym_res-1_Cappelle2021_T1w_mask_brain_mask.nii.gz
+                    M4_template_mask=$M3_template_mask_4_T1w
 
+                    
                     mask1="$outdir/masks/${base}_T1w_iso_biascorrected_brain_mask.nii.gz"
                     mask_subj="$outdir/masks/${base}_method4_brain_mask_without_lesions.nii.gz"
                     MSlesion_dilated="$outdir/masks/${base}_method4_MSlesion_dilated.nii.gz"
-                    maskfilter $MSlesion dilate $MSlesion_dilated -force
-                    mrcalc $mask1 $MSlesion_dilated -subtract $mask_subj -nthreads $ncpu -force
+
+                    if [ $flair -eq 1 ];then    
+                        if [ -f $MSlesion_dilated ];then
+                            maskfilter $MSlesion dilate $MSlesion_dilated -force
+                            mrcalc $mask1 $MSlesion_dilated -subtract $mask_subj -nthreads $ncpu -force
+                        fi
+                    else
+                        echo " No flair file found!"
+                        cp $mask1 $mask_subj
+                    fi
 
 
                     mrhistmatch \
